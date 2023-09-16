@@ -20,14 +20,31 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def res(ctx, *, city):
     try:
         yelp_api = YelpAPI(YELP_KEY)
-        response = yelp_api.search_query(location=city, term='restaurant',  sort_by='rating', limit=5)
-       
-        for business in response['businesses']:
-            await ctx.send(f"{business['name']}\nRating: {business['rating']}\nAddress: {', '.join(business['location']['display_address'])}\n-------------------------------------")
+        response = yelp_api.search_query(location=city, term='restaurant', limit=5)
+        for restaurant in response['businesses']:
+            await ctx.send(f"{restaurant['name']}\nRating: {restaurant['rating']}\nAddress: {', '.join(restaurant['location']['display_address'])}\nURL: {restaurant['url']}\n-------------------------------------")
     except Exception as e:
         print(f"An error occurred: {e}")
         await ctx.send(f"Error: {e}")
 
-    
+@bot.command()
+async def food(ctx, *, cuisine);
+    try:
+        yelp_api = YelpAPI(YELP_KEY)
+        response = yelp_api.search_query(location="San Jose, CA", term=cuisine, limit=5)
+        for restaurant in response['businesses']:
+            await ctx.send(f"{restaurant['name']}\nRating: {restaurant['rating']}\nAddress: {', '.join(restaurant['location']['display_address'])}\nURL: {restaurant['url']}\n-------------------------------------")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        await ctx.send(f"Error: {e}") 
+
+
 
 bot.run(BOT_TOKEN)
+
+
+
+
+
+# Command to run
+#py -3 .\discord_bot.py
