@@ -15,6 +15,12 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+
+@bot.event
+async def on_greeting(message):
+    if message.content.startswith("$hello"):
+        await message.channel.send("Hello ", message.author)
+
 # Restaurants
 @bot.command()
 async def res(ctx, *, city):
@@ -28,7 +34,7 @@ async def res(ctx, *, city):
         await ctx.send(f"Error: {e}")
 
 @bot.command()
-async def food(ctx, *, cuisine);
+async def food(ctx, *, cuisine):
     try:
         yelp_api = YelpAPI(YELP_KEY)
         response = yelp_api.search_query(location="San Jose, CA", term=cuisine, limit=5)
